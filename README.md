@@ -1,3 +1,9 @@
+<br/>
+<div>
+<img src="https://github.com/user-attachments/assets/db0708de-426b-4fb2-9e5a-85f4a640b49d" alt="Logo" width="800" height="450">
+</div>
+<br/>
+
 ## Nodes
 
 In your scene, create a TextureRect node to hold the crosshair shader.<br/>
