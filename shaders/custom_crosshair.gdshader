@@ -1,5 +1,7 @@
 /*
-	Custom Crosshair Shader by: Quot3e - https://github.com/Quot3e
+	Custom Crosshair Shader by: Quot3e
+	https://github.com/Quot3e/godot-crosshair-shader
+	
 	MIT License
 */
 
