@@ -1,0 +1,187 @@
+[gd_scene load_steps=14 format=3 uid="uid://qtbjqvl6boxg"]
+
+[ext_resource type="Shader" path="res://shaders/custom_crosshair.gdshader" id="1_qs42f"]
+[ext_resource type="Script" path="res://scenes/crosshair.gd" id="2_yhfkr"]
+[ext_resource type="Shader" path="res://shaders/crosshair.gdshader" id="3_ks6ol"]
+[ext_resource type="Script" path="res://scenes/crosshair_3.gd" id="4_34fbw"]
+[ext_resource type="Script" path="res://scenes/color_items.gd" id="5_4a546"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_80v0l"]
+shader = ExtResource("3_ks6ol")
+shader_parameter/is_symmetric = true
+shader_parameter/center_offset = Vector2(0, 0)
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_outline_color = Color(0, 0, 0, 1)
+shader_parameter/line_length = Vector2(20.08, 20.225)
+shader_parameter/line_thickness = Vector2(1, 1)
+shader_parameter/line_offset = Vector2(0, 0)
+shader_parameter/line_outline_thickness = Vector2(0, 0)
+shader_parameter/dot_color = Color(1, 0, 0, 1)
+shader_parameter/dot_outline_color = Color(0, 0, 0.00392157, 1)
+shader_parameter/dot_size = 18.59
+shader_parameter/dot_outline_thickness = 2.815
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uh5xh"]
+shader = ExtResource("1_qs42f")
+shader_parameter/pixel_size = 32.0
+shader_parameter/line_color = Color(0.137255, 0.913725, 0.470588, 1)
+shader_parameter/line_outline_color = Color(0, 0, 0, 1)
+shader_parameter/line_thickness = 0.0156
+shader_parameter/line_length = 0.648
+shader_parameter/line_offset = 0.0
+shader_parameter/line_outline = 0.0
+shader_parameter/dot_color = Color(0, 1, 0, 1)
+shader_parameter/dot_outline_color = Color(0, 0, 0, 1)
+shader_parameter/dot_size = 0.0
+shader_parameter/dot_outline = 0.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ij33v"]
+width = 128
+height = 128
+
+[sub_resource type="Gradient" id="Gradient_gearx"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2ynw3"]
+gradient = SubResource("Gradient_gearx")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q5sc7"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_xrx32"]
+sky_material = SubResource("ProceduralSkyMaterial_q5sc7")
+
+[sub_resource type="Environment" id="Environment_3uaav"]
+background_mode = 2
+sky = SubResource("Sky_xrx32")
+tonemap_mode = 2
+
+[node name="Main" type="Node3D"]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="UI/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1280, 720)
+render_target_update_mode = 0
+
+[node name="ColorRect" type="ColorRect" parent="UI/SubViewportContainer/SubViewport"]
+material = SubResource("ShaderMaterial_80v0l")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+
+[node name="Crosshair" type="TextureRect" parent="UI"]
+visible = false
+material = SubResource("ShaderMaterial_uh5xh")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("NoiseTexture2D_ij33v")
+stretch_mode = 3
+script = ExtResource("2_yhfkr")
+
+[node name="Crosshair2" type="ColorRect" parent="UI"]
+material = SubResource("ShaderMaterial_80v0l")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+script = ExtResource("4_34fbw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+layout_mode = 0
+offset_right = 551.0
+offset_bottom = 618.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "20"
+
+[node name="HSlider" type="HSlider" parent="UI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="CheckButton" type="CheckButton" parent="UI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label2" type="Label" parent="UI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "16"
+
+[node name="HSlider2" type="HSlider" parent="UI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="UI/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "20"
+
+[node name="HSlider" type="HSlider" parent="UI/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="UI/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "20"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="UI/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OptionButton" type="OptionButton" parent="UI/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 1
+popup/item_0/icon = SubResource("GradientTexture2D_2ynw3")
+script = ExtResource("5_4a546")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3uaav")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+visible = false

@@ -1,24 +1,21 @@
-[gd_scene load_steps=8 format=3 uid="uid://qtbjqvl6boxg"]
+[gd_scene load_steps=6 format=3 uid="uid://qtbjqvl6boxg"]
 
-[ext_resource type="Script" path="res://scripts/shader_controller.gd" id="1_ldqqm"]
-[ext_resource type="Shader" path="res://shaders/custom_crosshair.gdshader" id="1_qs42f"]
+[ext_resource type="Shader" path="res://shaders/crosshair.gdshader" id="3_ks6ol"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6d0xx"]
-shader = ExtResource("1_qs42f")
-shader_parameter/line_color = Color(0, 1, 0, 0.8)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_80v0l"]
+shader = ExtResource("3_ks6ol")
+shader_parameter/is_symmetric = true
+shader_parameter/center_offset = Vector2(0, 0)
+shader_parameter/line_color = Color(1, 1, 1, 1)
 shader_parameter/line_outline_color = Color(0, 0, 0, 1)
-shader_parameter/line_thickness = 0.2
-shader_parameter/line_length = 0.2
-shader_parameter/line_offset = 0.2
-shader_parameter/line_outline_thickness = 0.5
-shader_parameter/dot_color = Color(0, 1, 0, 0.8)
+shader_parameter/line_length = Vector2(20, 20)
+shader_parameter/line_thickness = Vector2(1, 1)
+shader_parameter/line_offset = Vector2(10, 10)
+shader_parameter/line_outline_thickness = Vector2(1, 1)
+shader_parameter/dot_color = Color(1, 1, 1, 1)
 shader_parameter/dot_outline_color = Color(0, 0, 0, 1)
-shader_parameter/dot_size = 0.2
-shader_parameter/dot_outline_thickness = 0.5
-shader_parameter/antialiasing = 1.0
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_tln60"]
-size = Vector2(128, 128)
+shader_parameter/dot_size = 2.0
+shader_parameter/dot_outline_thickness = 1.0
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q5sc7"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -34,227 +31,30 @@ tonemap_mode = 2
 
 [node name="Main" type="Node3D"]
 
-[node name="UI" type="Control" parent="."]
-layout_mode = 3
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_ldqqm")
-shader_material = SubResource("ShaderMaterial_6d0xx")
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
 
-[node name="Crosshair" type="TextureRect" parent="UI"]
-material = SubResource("ShaderMaterial_6d0xx")
-layout_mode = 1
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+
+[node name="Crosshair" type="ColorRect" parent="SubViewportContainer/SubViewport"]
+material = SubResource("ShaderMaterial_80v0l")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("PlaceholderTexture2D_tln60")
-stretch_mode = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="UI"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -289.5
-offset_right = 244.0
-offset_bottom = 289.5
-grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer"]
-layout_mode = 2
-
-[node name="line_color" type="ColorPickerButton" parent="UI/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "line_color"
-
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/line_color"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "line_color"
-
-[node name="line_outline_color" type="ColorPickerButton" parent="UI/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "line_outline_color"
-
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/line_outline_color"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "line_outline_color"
-
-[node name="line_thickness" type="HSlider" parent="UI/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-max_value = 1.0
-step = 0.001
-
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/line_thickness"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -19.5
-offset_right = 19.5
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "line_thickness"
-
-[node name="line_length" type="HSlider" parent="UI/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-max_value = 1.0
-step = 0.001
-
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/line_length"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -19.5
-offset_right = 19.5
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "line_length"
-
-[node name="line_offset" type="HSlider" parent="UI/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-max_value = 1.0
-step = 0.001
-
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/line_offset"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -19.5
-offset_right = 19.5
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "line_offset"
-
-[node name="line_outline_thickness" type="HSlider" parent="UI/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-max_value = 1.0
-step = 0.001
-
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/line_outline_thickness"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -19.5
-offset_right = 19.5
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "line_outline_thickness"
-
-[node name="dot_color" type="ColorPickerButton" parent="UI/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "dot_color"
-
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/dot_color"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "dot_color"
-
-[node name="dot_outline_color" type="ColorPickerButton" parent="UI/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "dot_outline_color"
-
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/dot_outline_color"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "dot_outline_color"
-
-[node name="dot_size" type="HSlider" parent="UI/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-max_value = 1.0
-step = 0.001
-
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/dot_size"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -19.5
-offset_right = 19.5
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "dot_size"
-
-[node name="dot_outline_thickness" type="HSlider" parent="UI/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-max_value = 1.0
-step = 0.001
-
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/dot_outline_thickness"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -19.5
-offset_right = 19.5
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "dot_outline_thickness"
-
-[node name="antialiasing" type="HSlider" parent="UI/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-max_value = 1.0
-step = 0.001
-
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/antialiasing"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -19.5
-offset_right = 19.5
-offset_bottom = 23.0
-grow_horizontal = 2
-text = "antialiasing(fake)"
-
-[node name="ResetButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Reset"
+size_flags_horizontal = 0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_3uaav")
@@ -264,16 +64,4 @@ transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
-
-[connection signal="color_changed" from="UI/MarginContainer/VBoxContainer/line_color" to="UI" method="_on_line_color_color_changed"]
-[connection signal="color_changed" from="UI/MarginContainer/VBoxContainer/line_outline_color" to="UI" method="_on_line_outline_color_color_changed"]
-[connection signal="value_changed" from="UI/MarginContainer/VBoxContainer/line_thickness" to="UI" method="_on_line_thickness_value_changed"]
-[connection signal="value_changed" from="UI/MarginContainer/VBoxContainer/line_length" to="UI" method="_on_line_length_value_changed"]
-[connection signal="value_changed" from="UI/MarginContainer/VBoxContainer/line_offset" to="UI" method="_on_line_offset_value_changed"]
-[connection signal="value_changed" from="UI/MarginContainer/VBoxContainer/line_outline_thickness" to="UI" method="_on_line_outline_thickness_value_changed"]
-[connection signal="color_changed" from="UI/MarginContainer/VBoxContainer/dot_color" to="UI" method="_on_dot_color_color_changed"]
-[connection signal="color_changed" from="UI/MarginContainer/VBoxContainer/dot_outline_color" to="UI" method="_on_dot_outline_color_color_changed"]
-[connection signal="value_changed" from="UI/MarginContainer/VBoxContainer/dot_size" to="UI" method="_on_dot_size_value_changed"]
-[connection signal="value_changed" from="UI/MarginContainer/VBoxContainer/dot_outline_thickness" to="UI" method="_on_dot_outline_thickness_value_changed"]
-[connection signal="value_changed" from="UI/MarginContainer/VBoxContainer/antialiasing" to="UI" method="_on_antialiasing_value_changed"]
-[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/ResetButton" to="UI" method="_on_reset_button_pressed"]
+visible = false
